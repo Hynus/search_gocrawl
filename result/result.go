@@ -45,12 +45,12 @@ func GetFinalRet(answerBox []AnsStruct) ([]AnsStruct, string) {
 		finalRet.score = sum3
 	}
 	finalRetBox := []AnsStruct{{1, sum1},{2, sum2},{3,sum3}}
-	AnswerStr := "由于" + strconv.Itoa(finalRet.option) + "的综合得分最高，为：" + fmt.Sprintf("%0.5f",finalRet.score) + "\n所以选择" + strconv.Itoa(finalRet.option) + "."
+	AnswerStr := "由于" + strconv.Itoa(finalRet.option) + "的综合得分最高，为：" + fmt.Sprintf("%0.3f",finalRet.score) + "\n所以选择" + strconv.Itoa(finalRet.option) + "."
 	return finalRetBox, AnswerStr
 }
 
 func GetResult(searchSlice []string) {
-	searchEngine := []string{"Baidu", "Sogou", "360", "Bing"}
+	searchEngine := []string{"Baidu", "Sogou", "360", "ChinaSo"}
 	answerBox := []AnsStruct{}
 	for _, item := range searchEngine {
 		tmpBox := make([]string, 0)
@@ -92,10 +92,10 @@ func GetResult(searchSlice []string) {
 			tmpAns := AnsStruct{ans,score}
 			answerBox = append(answerBox, tmpAns)
 		}
-		if item == "Bing" {
+		if item == "ChinaSo" {
 			tmpBox, choice, ans, score = search.SearchFromAll(item, searchSlice)
 			fmt.Println("————————————————————————————————————————————")
-			fmt.Println("必应搜索结果如下：")
+			fmt.Println("中国搜索搜索结果如下：")
 			for _, x := range tmpBox{
 				fmt.Println(x)
 			}

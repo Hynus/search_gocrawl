@@ -58,15 +58,29 @@ func SearchIn360(searchStr string) (int64, error) {
 	return result, nil
 }
 
-func SearchInBing(searchStr string) (int64, error) {
+//func SearchInBing(searchStr string) (int64, error) {
+//	key := url.QueryEscape(searchStr)
+//	url := "https://cn.bing.com/search?q=" + key
+//	doc, err := goquery.NewDocument(url)
+//	if err != nil {
+//		return 0, err
+//	}
+//	tmpRet := doc.Find(".sb_count").Text()
+//	tmpRet = strings.Trim(tmpRet, " 条结果")
+//	resultStr := strings.Join(strings.Split(tmpRet,","),"")
+//	result, _ := strconv.ParseInt(resultStr,10,64)
+//	return result, nil
+//}
+
+func SearchInChinaSo(searchStr string) (int64, error) {
 	key := url.QueryEscape(searchStr)
-	url := "https://cn.bing.com/search?q=" + key
+	url := "http://www.chinaso.com/search/pagesearch.htm?q=" + key
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
 		return 0, err
 	}
-	tmpRet := doc.Find(".sb_count").Text()
-	tmpRet = strings.Trim(tmpRet, " 条结果")
+	tmpRet := doc.Find(".pageTotal").Text()
+	tmpRet = strings.Trim(strings.Split(tmpRet,"约")[1], "条相关结果")
 	resultStr := strings.Join(strings.Split(tmpRet,","),"")
 	result, _ := strconv.ParseInt(resultStr,10,64)
 	return result, nil
@@ -94,8 +108,11 @@ func SearchFromAll(engine string, searchSlice []string) ([]string, string, int, 
 		case "360" :
 			retNum, _ = SearchIn360(item)
 			allRetBox = append(allRetBox, retNum)
-		case "Bing":
-			retNum, _ = SearchInBing(item)
+		//case "Bing":
+		//	retNum, _ = SearchInBing(item)
+		//	allRetBox = append(allRetBox, retNum)
+		case "ChinaSo":
+			retNum, _ = SearchInChinaSo(item)
 			allRetBox = append(allRetBox, retNum)
 		default:
 			retNum, _ = SearchInBaidu(item)
